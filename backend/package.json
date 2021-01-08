@@ -1,0 +1,25 @@
+{
+  "name": "ecommerce",
+  "version": "1.0.0",
+  "description": "Ecommer with Node.Js as back end and React Redux as Front end",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "keywords": [
+    "ecommerce",
+    "store",
+    "Products",
+    "Shopping Cart",
+    "PayPal",
+    "Credit Cart",
+    "Categories"
+  ],
+  "author": "Randrin Nzeukang",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "nodemon": "^2.0.7"
+  }
+}
