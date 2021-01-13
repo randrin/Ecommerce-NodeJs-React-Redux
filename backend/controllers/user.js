@@ -1,3 +1,16 @@
-exports.setUp = (req, res) => {
-  res.json({message: 'Hello set up ecommerce back end ....'});
-}
+const User = require("../models/user");
+const { errorHandler } = require("../helpers/errorHandler");
+
+exports.signup = (req, res) => {
+  const user = new User(req.body);
+  user.save((err, user) => {
+    if (err) {
+      return res.status(400).json({ error: errorHandler(err) });
+    }
+    user.salt = undefined;
+    user.hashed_password = undefined;
+    res.json({
+      user,
+    });
+  });
+};
