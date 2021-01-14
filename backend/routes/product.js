@@ -11,6 +11,7 @@ const {
   getProductById,
   getProductsRelated,
   getProductsCategories,
+  getProductImage,
   deleteProductById,
   updateProductById,
   productListBySearch,
@@ -20,6 +21,7 @@ router.get("/products", getAllProducts);
 router.get("/products/categories", getProductsCategories);
 router.get("/products/related/:productId", getProductsRelated);
 router.get("/:productId", getProductById);
+router.get("/image/:productId", getProductImage);
 router.delete(
   "/:productId/:userId",
   requiredSignin,
