@@ -7,11 +7,13 @@ const { requiredSignin, isAdmin, isAuth } = require("../controllers/auth");
 const {
   create,
   productById,
+  getAllProducts,
   getProductById,
   deleteProductById,
   updateProductById
 } = require("../controllers/product");
 
+router.get("/products", getAllProducts);
 router.get("/:productId", getProductById);
 router.delete(
   "/:productId/:userId",
