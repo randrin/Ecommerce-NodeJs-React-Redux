@@ -2,7 +2,6 @@ const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 const expressJwt = require("express-jwt");
 const { errorHandler } = require("../helpers/errorHandler");
-const user = require("../models/user");
 
 exports.signup = (req, res) => {
   const user = new User(req.body);
@@ -53,5 +52,25 @@ exports.signout = (req, res) => {
 exports.requiredSignin = expressJwt({
   secret: process.env.JWT_SECRET,
   algorithms: ["HS256"],
-  userProperty: "auht",
+  userProperty: "auth",
 });
+
+exports.isAuth = (req, res, next) => {
+  let user = req.profile && req.auth && req.profile._id == req.auth.id;
+  console.log('User: ', req.auth);
+  if (!user) {
+    return res.status(403).json({
+      error: "Access denied !",
+    });
+  }
+  next();
+};
+
+exports.isAdmin = (req, res, next) => {
+  if (req.profile.role === 0) {
+    return res.status(403).json({
+      error: "Access denied for admin resources !",
+    });
+  }
+  next();
+};
