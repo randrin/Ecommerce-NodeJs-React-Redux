@@ -9,6 +9,7 @@ const {
   productById,
   getProductById,
   deleteProductById,
+  updateProductById
 } = require("../controllers/product");
 
 router.get("/:productId", getProductById);
@@ -19,6 +20,13 @@ router.delete(
   isAdmin,
   deleteProductById
 );
+router.put(
+    "/:productId/:userId",
+    requiredSignin,
+    isAuth,
+    isAdmin,
+    updateProductById
+  );
 router.post("/create/:userId", requiredSignin, isAuth, isAdmin, create);
 
 router.param("userId", userById);
