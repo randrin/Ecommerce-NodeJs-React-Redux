@@ -15,13 +15,19 @@ exports.create = (req, res) => {
     }
 
     // check for all fields
-    console.log('fields: ', fields);
     const { name, description, price, category, quantity, shipping } = fields;
 
-    if (!name || !description || !price || !category || !quantity || !shipping) {
-        return res.status(400).json({
-            error: 'All fields are required'
-        });
+    if (
+      !name ||
+      !description ||
+      !price ||
+      !category ||
+      !quantity ||
+      !shipping
+    ) {
+      return res.status(400).json({
+        error: "All fields are required",
+      });
     }
 
     let product = new Product(fields);
@@ -35,9 +41,9 @@ exports.create = (req, res) => {
       product.photo.data = fs.readFileSync(files.photo.path);
       product.photo.contentType = files.photo.type;
     } else {
-        return res.status(400).json({
-            error: "Image is required!",
-          });
+      return res.status(400).json({
+        error: "Image is required!",
+      });
     }
 
     product.save((err, result) => {
@@ -47,4 +53,21 @@ exports.create = (req, res) => {
       res.json({ result });
     });
   });
+};
+
+exports.productById = (req, res, next, id) => {
+  Product.findById(id).exec((err, product) => {
+    if (err || !product) {
+      return res.status(400).json({
+        error: "Product not found !",
+      });
+    }
+    req.product = product;
+    next();
+  });
+};
+
+exports.getProductById = (req, res) => {
+  req.product.photo = undefined;
+  return res.json(req.product);
 };
