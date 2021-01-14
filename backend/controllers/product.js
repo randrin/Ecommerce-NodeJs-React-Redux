@@ -146,7 +146,6 @@ exports.updateProductById = (req, res) => {
  */
 
 exports.getAllProducts = (req, res) => {
-
   let order = req.query.order ? req.query.order : "asc";
   let sortBy = req.query.sortBy ? req.query.sortBy : "_id";
   let limit = req.query.limit ? parseInt(req.query.limit) : 6;
@@ -156,6 +155,27 @@ exports.getAllProducts = (req, res) => {
     .populate("category")
     .sort([[sortBy, order]])
     .limit(limit)
+    .exec((err, products) => {
+      if (err) {
+        return res.status(400).json({
+          error: "Products not found.",
+        });
+      }
+      res.json(products);
+    });
+};
+
+/**
+ * it will find the products based on the req product category
+ * other products that has the same category, will be returned
+ * $ne: Not Included
+ */
+exports.getProductsRelated = (req, res) => {
+  let limit = req.query.limit ? parseInt(req.query.limit) : 6;
+
+  Product.find({ _id: { $ne: req.product }, category: req.product.category })
+    .limit(limit)
+    .populate("category", "_id name")
     .exec((err, products) => {
       if (err) {
         return res.status(400).json({

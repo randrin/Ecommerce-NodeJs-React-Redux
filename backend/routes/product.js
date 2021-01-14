@@ -9,11 +9,13 @@ const {
   productById,
   getAllProducts,
   getProductById,
+  getProductsRelated,
   deleteProductById,
   updateProductById
 } = require("../controllers/product");
 
 router.get("/products", getAllProducts);
+router.get("/products/related/:productId", getProductsRelated);
 router.get("/:productId", getProductById);
 router.delete(
   "/:productId/:userId",
