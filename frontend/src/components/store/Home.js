@@ -1,11 +1,14 @@
-import React from 'react'
+import React from "react";
+import Layout from "../core/Layout";
 
 const Home = () => {
-    return (
-        <div>
-            Home Ecommerce Store
-        </div>
-    )
-}
+  return (
+    <Layout
+      title="FullStack React Node MongoDB Ecommerce App"
+      description="Node React E-commerce App"
+      className="container-fluid"
+    ></Layout>
+  );
+};
 
 export default Home;

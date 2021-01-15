@@ -1,10 +1,12 @@
 import { BrowserRouter, Route } from "react-router-dom";
+import Menu from "./components/core/Menu";
 import Routes from "./components/routes/Routes";
 
 const EcommerceApp = () => {
   return (
     <>
       <BrowserRouter forceRefresh={true}>
+        <Menu />
         <Route component={Routes} />
       </BrowserRouter>
     </>
