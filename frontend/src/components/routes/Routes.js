@@ -4,7 +4,7 @@ import Home from "../store/Home";
 import Signin from "../user/Signin";
 import Signup from "../user/Signup";
 
-const Routes = (props) => (
+const Routes = () => (
   <Switch>
     <Route exact path="/" strict component={Home} />
     <Route exact path="/signin" strict component={Signin} />
