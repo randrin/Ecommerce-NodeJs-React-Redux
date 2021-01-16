@@ -41,20 +41,44 @@ const Menu = ({ history }) => {
             </li>
           </>
         )}
+
         {isAuthenticated() && (
-          <li className="nav-item ecommerce-nav-signout">
-            <span
-              className="nav-link"
-              style={{ cursor: "pointer", color: "#ffffff" }}
-              onClick={() =>
-                signout(() => {
-                  history.push("/");
-                })
-              }
-            >
-              Signout
-            </span>
-          </li>
+          <div className="ecommerce-nav-signout">
+            {isAuthenticated().user.role === 1 ? (
+              <li className="nav-item">
+                <Link
+                  className="nav-link"
+                  style={isActive(history, "/admin/dashboard")}
+                  to="/admin/dashboard"
+                >
+                  Dashboard
+                </Link>
+              </li>
+            ) : (
+              <li className="nav-item">
+                <Link
+                  className="nav-link"
+                  style={isActive(history, "/user/dashboard")}
+                  to="/user/dashboard"
+                >
+                  Dashboard
+                </Link>
+              </li>
+            )}
+            <li className="nav-item">
+              <span
+                className="nav-link"
+                style={{ cursor: "pointer", color: "#ffffff" }}
+                onClick={() =>
+                  signout(() => {
+                    history.push("/");
+                  })
+                }
+              >
+                Signout
+              </span>
+            </li>
+          </div>
         )}
       </ul>
     </div>
