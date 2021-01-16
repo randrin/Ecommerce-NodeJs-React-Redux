@@ -16,16 +16,37 @@ export const signup = (user) => {
 };
 
 export const signin = (user) => {
-    return fetch(`${API}/signin`, {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(user),
+  return fetch(`${API}/signin`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(user),
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((error) => console.log(error));
+};
+
+export const authentificate = (data, next) => {
+  if (typeof window !== "undefined") {
+    localStorage.setItem("jwt", JSON.stringify(data));
+    next();
+  }
+};
+
+export const signout = (next) => {
+  if (typeof window !== "undefined") {
+    localStorage.removeItem("jwt");
+    next();
+    return fetch(`${API}/signout`, {
+      method: "GET",
     })
       .then((response) => {
-        return response.json();
+        console.log("signout: ", response);
       })
       .catch((error) => console.log(error));
-  };
+  }
+};
