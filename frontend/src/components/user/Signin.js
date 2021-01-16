@@ -1,27 +1,70 @@
 import React, { useState } from "react";
 import Layout from "../core/Layout";
-import { API } from "../../config";
+import { signin } from "../auth";
+import { Redirect } from "react-router-dom";
 
 const Signin = () => {
   const [values, setValues] = useState({
-    name: "",
     email: "",
     password: "",
     error: "",
-    sucess: false
+    loading: false,
+    redirectToReferrer: false,
   });
 
-  const { email, password, error } = values;
+  const { email, password, loading, error, redirectToReferrer } = values;
 
   const handleChange = (name) => (event) => {
     setValues({ ...values, error: false, [name]: event.target.value });
+  };
+
+  const clickSubmit = (event) => {
+    event.preventDefault();
+    setValues({ ...values, error: false, loading: true });
+    signin({ email, password }).then((data) => {
+      if (data.error) {
+        setValues({ ...values, error: data.error, loading: false });
+      } else {
+        setValues({
+          ...values,
+          redirectToReferrer: true,
+        });
+      }
+    });
+  };
+
+  const showError = () => (
+    <div
+      className="alert alert-danger"
+      style={{ display: error ? "" : "none" }}
+    >
+      {error}
+    </div>
+  );
+
+  const showLoading = () => (
+    <div
+      className="alert alert-info"
+      style={{ display: loading ? "" : "none" }}
+    >
+      <h2>Loading ....</h2>
+      <p>Please wait.</p>
+    </div>
+  );
+
+  const redirectUser = () => {
+    if (redirectToReferrer) {
+      return <Redirect to="/" />;
+    }
   };
 
   const signInForm = () => {
     return (
       <form>
         <div className="form-group">
-          <label className="text-muted">Email <span>*</span></label>
+          <label className="text-muted">
+            Email <span>*</span>
+          </label>
           <input
             onChange={handleChange("email")}
             type="email"
@@ -31,7 +74,9 @@ const Signin = () => {
         </div>
 
         <div className="form-group">
-          <label className="text-muted">Password <span>*</span></label>
+          <label className="text-muted">
+            Password <span>*</span>
+          </label>
           <input
             onChange={handleChange("password")}
             type="password"
@@ -39,7 +84,9 @@ const Signin = () => {
             value={password}
           />
         </div>
-        <button className="btn btn-primary">Submit</button>
+        <button onClick={clickSubmit} className="btn btn-primary">
+          Submit
+        </button>
       </form>
     );
   };
@@ -51,7 +98,10 @@ const Signin = () => {
         description="FullStack React Node MongoDB Ecommerce App"
         className="container col-md-8 offset-md-2"
       >
+        {showLoading()}
+        {showError()}
         {signInForm()}
+        {redirectUser()}
       </Layout>
     </div>
   );

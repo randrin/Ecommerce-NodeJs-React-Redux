@@ -7,7 +7,9 @@ const Home = () => {
       title="FullStack React Node MongoDB Ecommerce App"
       description="Node React E-commerce App"
       className="container-fluid"
-    ></Layout>
+    >
+      <h2>Home Page Component</h2>
+    </Layout>
   );
 };
 

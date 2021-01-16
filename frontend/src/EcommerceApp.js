@@ -6,7 +6,7 @@ import Routes from "./components/routes/Routes";
 const EcommerceApp = () => {
   return (
     <>
-      <BrowserRouter forceRefresh={true}>
+      <BrowserRouter>
         <Menu />
         <Route component={Routes} />
       </BrowserRouter>
