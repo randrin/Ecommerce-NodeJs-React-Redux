@@ -1,5 +1,6 @@
 import React from "react";
 import { Switch, Route } from "react-router-dom";
+import AddCategory from "../admin/AddCategory";
 import AdminRoute from "../auth/AdminRoute";
 import PrivateRoute from "../auth/PrivateRoute";
 import Home from "../store/Home";
@@ -15,6 +16,7 @@ const Routes = () => (
     <Route exact path="/signup" strict component={Signup} />
     <PrivateRoute exact path="/user/dashboard" strict component={UserDashboard} />
     <AdminRoute exact path="/admin/dashboard" strict component={AdminDashboard} />
+    <AdminRoute exact path="/create/category" strict component={AddCategory} />
   </Switch>
 );
 
