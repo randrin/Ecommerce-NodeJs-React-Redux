@@ -35,7 +35,7 @@ const AddCategory = () => {
   const newCategoryFom = () => (
     <form onSubmit={clickSubmit}>
       <div className="form-group">
-        <label className="text-muted">Name</label>
+        <label className="text-muted">Name *</label>
         <input
           type="text"
           className="form-control"
@@ -45,16 +45,17 @@ const AddCategory = () => {
           required
         />
       </div>
-      <div className="mt-4 d-flex">
-        <button className="btn btn-outline-primary">Create Category</button>
-        {goBack()}
+      <div className="mt-4">
+        <button className="btn btn-outline-primary">
+          <i className="fa fa-check-circle"></i> Create Category
+        </button>
       </div>
     </form>
   );
 
   const showSuccess = () => {
     if (success) {
-      return <h3 className="text-success">{name} is created</h3>;
+      return <h3 className="text-success">{name} is created successfully.</h3>;
     }
   };
 
@@ -69,9 +70,9 @@ const AddCategory = () => {
   };
 
   const goBack = () => (
-    <div className="ml-5">
-      <Link to="/admin/dashboard" className="btn btn-warning">
-        Back to Dashboard
+    <div className="mb-5">
+      <Link to="/admin/dashboard" className="text-warning">
+        <i className="fa fa-angle-left"></i> Back to Dashboard
       </Link>
     </div>
   );
@@ -84,6 +85,7 @@ const AddCategory = () => {
     >
       <div className="row">
         <div className="col-md-8 offset-md-2">
+          {goBack()}
           {showSuccess()}
           {showError()}
           {newCategoryFom()}

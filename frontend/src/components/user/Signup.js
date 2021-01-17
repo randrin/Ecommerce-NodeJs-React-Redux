@@ -55,50 +55,48 @@ const Signup = () => {
     </div>
   );
 
-  const signUpForm = () => {
-    return (
-      <form>
-        <div className="form-group">
-          <label className="text-muted">
-            Name <span>*</span>
-          </label>
-          <input
-            onChange={handleChange("name")}
-            type="text"
-            className="form-control"
-            value={name}
-          />
-        </div>
+  const signUpForm = () => (
+    <form>
+      <div className="form-group">
+        <label className="text-muted">
+          Name <span>*</span>
+        </label>
+        <input
+          onChange={handleChange("name")}
+          type="text"
+          className="form-control"
+          value={name}
+        />
+      </div>
 
-        <div className="form-group">
-          <label className="text-muted">
-            Email <span>*</span>
-          </label>
-          <input
-            onChange={handleChange("email")}
-            type="email"
-            className="form-control"
-            value={email}
-          />
-        </div>
+      <div className="form-group">
+        <label className="text-muted">
+          Email <span>*</span>
+        </label>
+        <input
+          onChange={handleChange("email")}
+          type="email"
+          className="form-control"
+          value={email}
+        />
+      </div>
 
-        <div className="form-group">
-          <label className="text-muted">
-            Password <span>*</span>
-          </label>
-          <input
-            onChange={handleChange("password")}
-            type="password"
-            className="form-control"
-            value={password}
-          />
-        </div>
-        <button onClick={clickSubmit} className="btn btn-primary">
-          Submit
-        </button>
-      </form>
-    );
-  };
+      <div className="form-group">
+        <label className="text-muted">
+          Password <span>*</span>
+        </label>
+        <input
+          onChange={handleChange("password")}
+          type="password"
+          className="form-control"
+          value={password}
+        />
+      </div>
+      <button onClick={clickSubmit} className="btn btn-primary">
+        Submit
+      </button>
+    </form>
+  );
 
   return (
     <div>

@@ -68,38 +68,36 @@ const Signin = () => {
     }
   };
 
-  const signInForm = () => {
-    return (
-      <form>
-        <div className="form-group">
-          <label className="text-muted">
-            Email <span>*</span>
-          </label>
-          <input
-            onChange={handleChange("email")}
-            type="email"
-            className="form-control"
-            value={email}
-          />
-        </div>
+  const signInForm = () => (
+    <form>
+      <div className="form-group">
+        <label className="text-muted">
+          Email <span>*</span>
+        </label>
+        <input
+          onChange={handleChange("email")}
+          type="email"
+          className="form-control"
+          value={email}
+        />
+      </div>
 
-        <div className="form-group">
-          <label className="text-muted">
-            Password <span>*</span>
-          </label>
-          <input
-            onChange={handleChange("password")}
-            type="password"
-            className="form-control"
-            value={password}
-          />
-        </div>
-        <button onClick={clickSubmit} className="btn btn-primary">
-          Submit
-        </button>
-      </form>
-    );
-  };
+      <div className="form-group">
+        <label className="text-muted">
+          Password <span>*</span>
+        </label>
+        <input
+          onChange={handleChange("password")}
+          type="password"
+          className="form-control"
+          value={password}
+        />
+      </div>
+      <button onClick={clickSubmit} className="btn btn-primary">
+        Submit
+      </button>
+    </form>
+  );
 
   return (
     <div>
