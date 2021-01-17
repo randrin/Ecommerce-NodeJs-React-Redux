@@ -2,9 +2,11 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Layout from "./Layout";
 import { getCategories } from "../admin/ApiAdmin";
+import { getFilteredProducts } from "./ApiCore";
 import Checkbox from "./Checkbox";
 import { prices } from "./fixedPrices";
 import Radiobox from "./Radiobox";
+import Card from "./Card";
 
 const Shop = () => {
   const [myFilters, setMyFilters] = useState({
@@ -12,9 +14,14 @@ const Shop = () => {
   });
   const [categories, setCategories] = useState([]);
   const [error, setError] = useState(false);
+  const [limit, setLimit] = useState(6);
+  const [skip, setSkip] = useState(0);
+  const [size, setSize] = useState(0);
+  const [filteredResults, setFilteredResults] = useState([]);
 
   useEffect(() => {
     init();
+    loadFilteredResults(myFilters.filters);
   }, []);
 
   const handleFilters = (filters, filterBy) => {
@@ -26,8 +33,47 @@ const Shop = () => {
       let priceValues = handlePrice(filters);
       newFilters.filters[filterBy] = priceValues;
     }
-
+    loadFilteredResults(myFilters.filters);
     setMyFilters(newFilters);
+  };
+
+  const loadFilteredResults = (filters) => {
+    getFilteredProducts(skip, limit, filters).then((data) => {
+      if (data.error) {
+        setError(data.error);
+      } else {
+        setFilteredResults(data.data);
+        setSize(data.size);
+        setSkip(0);
+      }
+    });
+  };
+
+  const loadMore = () => {
+    let toSkip = skip + limit;
+    getFilteredProducts(toSkip, limit, myFilters.filters).then((data) => {
+      if (data.error) {
+        setError(data.error);
+      } else {
+        setFilteredResults([...filteredResults, ...data.data]);
+        setSize(data.size);
+        setSkip(0);
+      }
+    });
+  };
+
+  const loadMoreButton = () => {
+    return (
+      size > 0 &&
+      size >= limit && (
+        <div className="text-center">
+          <hr />
+          <button onClick={loadMore} className="btn btn-warning mb-5">
+            <i class="fa fa-spinner fa-spin"></i> Load more
+          </button>
+        </div>
+      )
+    );
   };
 
   const handlePrice = (value) => {
@@ -59,7 +105,7 @@ const Shop = () => {
       className="container-fluid"
     >
       <div className="row">
-        <div className="col-4">
+        <div className="col-2">
           <h4>Filter by categories</h4>
           <ul>
             <Checkbox
@@ -75,7 +121,15 @@ const Shop = () => {
             />
           </ul>
         </div>
-        <div className="col-8">{JSON.stringify(myFilters)}</div>
+        <div className="col-10">
+          <h2 className="mb-4">Products</h2>
+          <div className="row">
+            {filteredResults.map((product, i) => (
+              <Card key={i} product={product} />
+            ))}
+          </div>
+          {loadMoreButton()}
+        </div>
       </div>
     </Layout>
   );

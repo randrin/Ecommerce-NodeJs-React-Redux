@@ -16,7 +16,7 @@ const Menu = ({ history }) => {
       <ul className="nav nav-tabs bg-primary">
         <li className="nav-item">
           <Link className="nav-link" style={isActive(history, "/")} to="/">
-            Home
+            <i className="fa fa-home"></i> Home
           </Link>
         </li>
         <li className="nav-item">
@@ -36,7 +36,7 @@ const Menu = ({ history }) => {
                 style={isActive(history, "/signin")}
                 to="/signin"
               >
-                Signin
+                <i className="fa fa-user-circle"></i> Signin
               </Link>
             </li>
             <li className="nav-item">
@@ -45,7 +45,7 @@ const Menu = ({ history }) => {
                 style={isActive(history, "/signup")}
                 to="/signup"
               >
-                Signup
+                <i className="fa fa-user-plus"></i> Signup
               </Link>
             </li>
           </div>
@@ -60,7 +60,7 @@ const Menu = ({ history }) => {
                   style={isActive(history, "/admin/dashboard")}
                   to="/admin/dashboard"
                 >
-                  Dashboard
+                  <i className="fa fa-th"></i> Dashboard
                 </Link>
               </li>
             ) : (
@@ -70,7 +70,7 @@ const Menu = ({ history }) => {
                   style={isActive(history, "/user/dashboard")}
                   to="/user/dashboard"
                 >
-                  Dashboard
+                  <i className="fa fa-th"></i> Dashboard
                 </Link>
               </li>
             )}
@@ -84,7 +84,7 @@ const Menu = ({ history }) => {
                   })
                 }
               >
-                Signout
+                <i className="fa fa-power-off"></i> Signout
               </span>
             </li>
           </div>

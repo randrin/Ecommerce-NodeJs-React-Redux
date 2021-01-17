@@ -9,7 +9,11 @@ const Card = ({ product }) => {
         <div className="card-header card-header-1 ">{product.name}</div>
         <ShowImage item={product} url="product" />
         <div className="card-body">
-          <p>{product.description}</p>
+          <p className="text-justify">
+            {product.description.length > 200
+              ? product.description.substring(0, 200) + " ..."
+              : product.description}
+          </p>
           <p>{product.price} €</p>
           <Link to="/" className="mr-2">
             <button className="btn btn-outline-primary mt-2 mb-2">
