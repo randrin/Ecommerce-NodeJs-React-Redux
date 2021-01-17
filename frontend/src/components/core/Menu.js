@@ -19,8 +19,17 @@ const Menu = ({ history }) => {
             Home
           </Link>
         </li>
+        <li className="nav-item">
+          <Link
+            className="nav-link"
+            style={isActive(history, "/shop")}
+            to="/shop"
+          >
+            <i className="fa fa-shopping-bag"></i> Shop
+          </Link>
+        </li>
         {!isAuthenticated() && (
-          <>
+          <div className="ecommerce-nav-signout">
             <li className="nav-item">
               <Link
                 className="nav-link"
@@ -39,7 +48,7 @@ const Menu = ({ history }) => {
                 Signup
               </Link>
             </li>
-          </>
+          </div>
         )}
 
         {isAuthenticated() && (
