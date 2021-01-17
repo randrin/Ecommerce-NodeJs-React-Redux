@@ -1,7 +1,37 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Layout from "../core/Layout";
+import { getProducts } from "../core/ApiCore";
 
 const Home = () => {
+  const [productsBySell, setProductsBySell] = useState([]);
+  const [productsByArrival, setProductsByArrival] = useState([]);
+  const [error, setError] = useState(false);
+
+  const loadProductsBySell = () => {
+    getProducts("sold").then((data) => {
+      if (data.error) {
+        setError(data.error);
+      } else {
+        setProductsBySell(data);
+      }
+    });
+  };
+
+  const loadProductsByArrival = () => {
+    getProducts("createdAt").then((data) => {
+      if (data.error) {
+        setError(data.error);
+      } else {
+        setProductsByArrival(data);
+      }
+    });
+  };
+
+  useEffect(() => {
+    loadProductsBySell();
+    loadProductsByArrival();
+  }, []);
+
   return (
     <Layout
       title="FullStack React Node MongoDB Ecommerce App"
@@ -9,6 +39,9 @@ const Home = () => {
       className="container-fluid"
     >
       <h2>Home Page Component</h2>
+      Product by Sell: {JSON.stringify(productsBySell)}
+      <br />
+      Product by Arrival: {JSON.stringify(productsByArrival)}
     </Layout>
   );
 };
