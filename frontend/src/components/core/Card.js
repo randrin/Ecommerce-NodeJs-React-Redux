@@ -1,13 +1,19 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, Redirect } from "react-router-dom";
 import ShowImage from "./ShowImage";
 import moment from "moment";
+import { addItem, updateItem } from "./CartHelpers";
 
 const Card = ({
   product,
   showViewProductButton = true,
   showAddToCartButton = true,
+  cartUpdate = false,
 }) => {
+
+  const [redirect, setRedirect] = useState(false);
+  const [count, setCount] = useState(product.count);
+
   const showStock = (quantity) => {
     return quantity > 0 ? (
       <span className="badge badge-success badge-pill">In Stock </span>
@@ -28,7 +34,17 @@ const Card = ({
     );
   };
 
-  const addToCart = () => {};
+  const addToCart = () => {
+    addItem(product, () => {
+      setRedirect(true);
+    });
+  };
+
+  const shouldRedirect = (redirect) => {
+    if (redirect) {
+      return <Redirect to="/cart" />;
+    }
+  };
 
   const showAddToCartBtn = (showAddToCartButton) => {
     return (
@@ -43,9 +59,37 @@ const Card = ({
     );
   };
 
+  const showCartUpdateOptions = (cartUpdate) => {
+    return (
+      cartUpdate && (
+        <div>
+          <div className="input-group-append mb-3">
+            <div className="input-group-append">
+              <span className="input-group-text">Ajust Quantity</span>
+            </div>
+            <input
+              type="number"
+              className="form-control"
+              value={count}
+              onChange={handleChange(product._id)}
+            />
+          </div>
+        </div>
+      )
+    );
+  };
+
+  const handleChange = (productId) => (event) => {
+    setCount(event.target.value < 1 ? 1 : event.target.value);
+    if (event.target.value >= 1) {
+      updateItem(productId, event.target.value);
+    }
+  };
+
   return (
     <div className="card">
       <div className="card-header card-header-1 name">{product.name}</div>
+      {shouldRedirect(redirect)}
       <Link to={`/product/${product._id}`}>
         <ShowImage item={product} url="product" />
       </Link>
@@ -67,6 +111,8 @@ const Card = ({
         {showViewButton(showViewProductButton)}
 
         {showAddToCartBtn(showAddToCartButton)}
+
+        {showCartUpdateOptions(cartUpdate)}
       </div>
     </div>
   );
