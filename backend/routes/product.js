@@ -12,6 +12,7 @@ const {
   getProductsRelated,
   getProductsCategories,
   getProductImage,
+  getProductsBySearch,
   deleteProductById,
   updateProductById,
   productListBySearch,
@@ -22,6 +23,7 @@ router.get("/products/categories", getProductsCategories);
 router.get("/products/related/:productId", getProductsRelated);
 router.get("/:productId", getProductById);
 router.get("/image/:productId", getProductImage);
+router.get("/products/search", getProductsBySearch);
 router.delete(
   "/:productId/:userId",
   requiredSignin,

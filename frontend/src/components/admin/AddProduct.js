@@ -131,7 +131,7 @@ const AddProduct = () => {
       <div className="form-group">
         <label className="text-muted">Category *</label>
         <select onChange={handleChange("category")} className="form-control">
-          <option disabled hidden selected value="">
+          <option disabled hidden defaultValue="">
             Please select
           </option>
           {categories &&
@@ -146,7 +146,7 @@ const AddProduct = () => {
       <div className="form-group">
         <label className="text-muted">Shipping</label>
         <select onChange={handleChange("shipping")} className="form-control">
-          <option disabled hidden selected value="">
+          <option disabled hidden defaultValue="">
             Please select
           </option>
           <option value="0">No</option>

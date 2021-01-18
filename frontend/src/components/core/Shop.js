@@ -69,7 +69,7 @@ const Shop = () => {
         <div className="text-center">
           <hr />
           <button onClick={loadMore} className="btn btn-warning mb-5">
-            <i class="fa fa-spinner fa-spin"></i> Load more
+            <i className="fa fa-spinner fa-spin"></i> Load more
           </button>
         </div>
       )
@@ -97,6 +97,15 @@ const Shop = () => {
       }
     });
   };
+
+  const errorSearch = () => (
+    <div className="col text-center my-5">
+      <div className="ecommerce-shop-no-result-content">
+        <i className="fa fa-frown-o"></i>
+        <span>No result found about your search. Try again !!</span>
+      </div>
+    </div>
+  );
 
   return (
     <Layout
@@ -127,6 +136,7 @@ const Shop = () => {
             {filteredResults.map((product, i) => (
               <Card key={i} product={product} />
             ))}
+            {filteredResults.length === 0 && errorSearch()}
           </div>
           {loadMoreButton()}
         </div>
