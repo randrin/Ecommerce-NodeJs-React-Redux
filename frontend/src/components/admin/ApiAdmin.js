@@ -44,3 +44,23 @@ export const getCategories = () => {
     })
     .catch((err) => console.log(err));
 };
+
+export const getProductById = (productId) => {
+  return fetch(`${API}/product/${productId}`, {
+    method: "GET",
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};
+
+export const getProductsRelatedById = (productId) => {
+  return fetch(`${API}/product/products/related/${productId}`, {
+    method: "GET",
+  })
+    .then((response) => {
+      return response.json();
+    })
+    .catch((err) => console.log(err));
+};

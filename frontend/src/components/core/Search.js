@@ -91,10 +91,14 @@ const Search = () => {
 
   const searchedProducts = (products = []) => (
     <div className="">
-      <h2 className="mt-4 mb-4 text-center">{searchMessage(searched, results)}</h2>
+      <h2 className="mt-4 mb-4 text-center">
+        {searchMessage(searched, results)}
+      </h2>
       <div className="row">
         {products.map((product, index) => (
-          <Card key={index} product={product} />
+          <div className="col-4 mb-3">
+            <Card key={index} product={product} />
+          </div>
         ))}
       </div>
     </div>
