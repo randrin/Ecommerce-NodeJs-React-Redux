@@ -25,6 +25,10 @@
     border-radius: 0px;
 }
 
+.btn:focus {
+    box-shadow: none !important;
+}
+
 /* cart badge */
 
 .cart-badge,

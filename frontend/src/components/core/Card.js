@@ -2,15 +2,15 @@ import React, { useState } from "react";
 import { Link, Redirect } from "react-router-dom";
 import ShowImage from "./ShowImage";
 import moment from "moment";
-import { addItem, updateItem } from "./CartHelpers";
+import { addItem, updateItem, removeItem } from "./CartHelpers";
 
 const Card = ({
   product,
   showViewProductButton = true,
   showAddToCartButton = true,
   cartUpdate = false,
+  showRemoveProductButton = false,
 }) => {
-
   const [redirect, setRedirect] = useState(false);
   const [count, setCount] = useState(product.count);
 
@@ -40,6 +40,12 @@ const Card = ({
     });
   };
 
+  const removeToCart = () => {
+    removeItem(product._id, () => {
+      setRedirect(true);
+    });
+  };
+
   const shouldRedirect = (redirect) => {
     if (redirect) {
       return <Redirect to="/cart" />;
@@ -54,6 +60,19 @@ const Card = ({
           className="btn btn-outline-warning mt-2 mb-2 card-btn-1"
         >
           <i className="fa fa-shopping-cart"></i> Add to cart
+        </button>
+      )
+    );
+  };
+
+  const showRemoveBtn = (showRemoveProductButton) => {
+    return (
+      showRemoveProductButton && (
+        <button
+          onClick={removeToCart}
+          className="btn btn-outline-danger mt-2 mb-2 card-btn-1"
+        >
+          <i className="fa fa-remove"></i> Remove to cart
         </button>
       )
     );
@@ -109,6 +128,8 @@ const Card = ({
         {showStock(product.quantity)}
         <br />
         {showViewButton(showViewProductButton)}
+
+        {showRemoveBtn(showRemoveProductButton)}
 
         {showAddToCartBtn(showAddToCartButton)}
 
