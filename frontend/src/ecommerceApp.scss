@@ -29,6 +29,10 @@
     box-shadow: none !important;
 }
 
+.nav-tabs .nav-link:focus, .nav-tabs .nav-link:hover {
+    border-color: transparent !important;
+}
+
 /* cart badge */
 
 .cart-badge,
