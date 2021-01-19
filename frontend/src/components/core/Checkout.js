@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { isAuthenticated } from "../auth";
 import { getBraintreeClientToken, getBraintreeProcessPayment } from "./ApiCore";
 import DropIn from "braintree-web-drop-in-react";
+import { emptyCart } from "./CartHelpers";
 
 const Checkout = ({ products }) => {
   const [data, setData] = useState({
@@ -106,13 +107,16 @@ const Checkout = ({ products }) => {
         };
         getBraintreeProcessPayment(userId, token, paymentData).then((data) => {
           if (data.error) {
-            console.log("Payment error: ", data);
+            // console.log("Payment error: ", data);
             setData({ ...data, error: data.error });
           } else {
-            console.log("Payment success: ", data);
+            // console.log("Payment success: ", data);
             setData({
               ...data,
               success: data.success,
+            });
+            emptyCart(() => {
+                console.log("Payment success and empty cart...")
             });
           }
         });
