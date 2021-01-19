@@ -29,7 +29,8 @@
     box-shadow: none !important;
 }
 
-.nav-tabs .nav-link:focus, .nav-tabs .nav-link:hover {
+.nav-tabs .nav-link:focus,
+.nav-tabs .nav-link:hover {
     border-color: transparent !important;
 }
 
@@ -172,4 +173,24 @@
 .form-control:focus {
     box-shadow: none !important;
     border-radius: 0 !important;
+}
+
+.braintree-sheet__content--form .braintree-form__field-group.braintree-form__field-group--card-type-known .braintree-form__field-secondary-icon,
+.braintree-sheet__content--form .braintree-form__field-group.braintree-form__field-group--has-error .braintree-form__field-error-icon,
+.braintree-sheet__content--form .braintree-form__field-group.braintree-form__field-group--is-focused .braintree-form__field-secondary-icon,
+.braintree-method .braintree-method__icon svg {
+    top: -13px !important;
+    position: relative;
+}
+
+.braintree-sheet--has-error .braintree-sheet__error .braintree-sheet__error-icon {
+    top: -7px !important;
+}
+
+.braintree-sheet__content--form .braintree-form__flexible-fields {
+    display: initial !important;
+}
+
+.braintree-sheet__content--form .braintree-form__field-group {
+    margin-bottom: 0px !important;
 }
