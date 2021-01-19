@@ -7,6 +7,7 @@ import { emptyCart } from "./CartHelpers";
 
 const Checkout = ({ products }) => {
   const [data, setData] = useState({
+    loading: false,
     success: false,
     clientToken: null,
     error: "",
@@ -63,6 +64,9 @@ const Checkout = ({ products }) => {
     </div>
   );
 
+  const showLoading = (loading) =>
+    loading && <h2>Loading ...</h2>;
+
   const getTotal = () => {
     return products.reduce((currentValue, nextValue) => {
       return currentValue + nextValue.count * nextValue.price;
@@ -74,7 +78,12 @@ const Checkout = ({ products }) => {
       {data.clientToken !== null && products.length > 0 ? (
         <div>
           <DropIn
-            options={{ authorization: data.clientToken }}
+            options={{
+              authorization: data.clientToken,
+              paypal: {
+                flow: "vault",
+              },
+            }}
             onInstance={(instance) => (data.instance = instance)}
           />
           <button className="btn btn-success btn-block" onClick={pay}>
@@ -86,6 +95,7 @@ const Checkout = ({ products }) => {
   );
 
   const pay = () => {
+    setData({ loading: true });
     // send the nonce to your server
     // nonce = data.instance.requestPaymentMethod()
     let nonce;
@@ -105,21 +115,27 @@ const Checkout = ({ products }) => {
           paymentMethodNonce: nonce,
           amount: getTotal(products),
         };
-        getBraintreeProcessPayment(userId, token, paymentData).then((data) => {
-          if (data.error) {
-            // console.log("Payment error: ", data);
-            setData({ ...data, error: data.error });
-          } else {
-            // console.log("Payment success: ", data);
-            setData({
-              ...data,
-              success: data.success,
-            });
-            emptyCart(() => {
-                console.log("Payment success and empty cart...")
-            });
-          }
-        });
+        getBraintreeProcessPayment(userId, token, paymentData)
+          .then((data) => {
+            if (data.error) {
+              // console.log("Payment error: ", data);
+              setData({ ...data, error: data.error });
+            } else {
+              // console.log("Payment success: ", data);
+              setData({
+                ...data,
+                success: data.success,
+              });
+              emptyCart(() => {
+                console.log("Payment success and empty cart...");
+                setData({ loading: false });
+              });
+            }
+          })
+          .catch((error) => {
+            // console.log("DropIn error: ", error);
+            setData({ ...data, error: error.message, loading: false });
+          });
       })
       .catch((error) => {
         // console.log("DropIn error: ", error);
@@ -132,6 +148,7 @@ const Checkout = ({ products }) => {
       <h2>Total: ${getTotal()}</h2>
       {showSuccess(data.success)}
       {showError(data.error)}
+      {showLoading(data.loading)}
       {showCheckout()}
     </div>
   );
