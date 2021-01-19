@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { isAuthenticated } from "../auth";
-import { getBraintreeClientToken, getBraintreeProcessPayment } from "./ApiCore";
+import {
+  createOrder,
+  getBraintreeClientToken,
+  getBraintreeProcessPayment,
+} from "./ApiCore";
 import DropIn from "braintree-web-drop-in-react";
 import { emptyCart } from "./CartHelpers";
 
@@ -64,8 +68,11 @@ const Checkout = ({ products }) => {
     </div>
   );
 
-  const showLoading = (loading) =>
-    loading && <h2>Loading ...</h2>;
+  const showLoading = (loading) => loading && <h2>Loading ...</h2>;
+
+  const handleAddress = (event) => {
+    setData({ ...data, address: event.target.value });
+  };
 
   const getTotal = () => {
     return products.reduce((currentValue, nextValue) => {
@@ -86,6 +93,17 @@ const Checkout = ({ products }) => {
             }}
             onInstance={(instance) => (data.instance = instance)}
           />
+          <br />
+          <div className="gorm-group mb-3">
+            <label className="text-muted">Delivery address:</label>
+            <textarea
+              onChange={handleAddress}
+              className="form-control"
+              rows={5}
+              value={data.address}
+              placeholder="Type your delivery address here..."
+            />
+          </div>
           <button className="btn btn-success btn-block" onClick={pay}>
             <i className="fa fa-money"></i> Pay
           </button>
@@ -93,6 +111,8 @@ const Checkout = ({ products }) => {
       ) : null}
     </div>
   );
+
+  let deliveryAddress = data.address;
 
   const pay = () => {
     setData({ loading: true });
@@ -126,19 +146,34 @@ const Checkout = ({ products }) => {
                 ...data,
                 success: data.success,
               });
-              emptyCart(() => {
-                console.log("Payment success and empty cart...");
-                setData({ loading: false });
-              });
+              // create order
+              const orderData = {
+                products: products,
+                transaction_id: data.transaction.id,
+                amount: data.transaction.amount,
+                address: deliveryAddress,
+              };
+              createOrder(userId, token, orderData)
+                .then((response) => {
+                  // empty cart
+                  emptyCart(() => {
+                    console.log("Payment success and empty cart...");
+                    setData({ loading: false, success: true });
+                  });
+                })
+                .catch((error) => {
+                  console.log("createOrder error: ", error);
+                  setData({ loading: false });
+                });
             }
           })
           .catch((error) => {
-            // console.log("DropIn error: ", error);
+            // console.log("Process Payment error: ", error);
             setData({ ...data, error: error.message, loading: false });
           });
       })
       .catch((error) => {
-        // console.log("DropIn error: ", error);
+        // console.log("Pay error: ", error);
         setData({ ...data, error: error.message });
       });
   };
