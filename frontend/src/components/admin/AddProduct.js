@@ -204,14 +204,45 @@ const AddProduct = () => {
       </div>
     );
 
+  const adminLinks = () => {
+    return (
+      <div className="card">
+        <h4 className="card-header">Admin Links</h4>
+        <ul className="list-group">
+          <li className="list-group-item">
+            <Link className="nav-link" to="/create/category">
+              Create Category
+            </Link>
+          </li>
+          <li className="list-group-item">
+            <Link className="nav-link" to="/create/product">
+              Create Product
+            </Link>
+          </li>
+          <li className="list-group-item">
+            <Link className="nav-link" to="/admin/orders">
+              Orders
+            </Link>
+          </li>
+          <li className="list-group-item">
+            <Link className="nav-link" to="/admin/products">
+              Manage Products
+            </Link>
+          </li>
+        </ul>
+      </div>
+    );
+  };
+
   return (
     <Layout
       title="Add a new category"
       description={`G'day ${user.name}, ready to create a new product?`}
-      className="container col-md-8 offset-md-2"
+      className="container-fluid"
     >
       <div className="row">
-        <div className="col-md-8 offset-md-2">
+        <div className="col-3">{adminLinks()}</div>
+        <div className="col-9">
           {goBack()}
           {showLoading()}
           {showError()}

@@ -6,7 +6,7 @@ import { getOrders, getStatusOrders, updateStatusOrders } from "./ApiAdmin";
 import moment from "moment";
 
 const Orders = () => {
-  
+
   const [orders, setOrders] = useState([]);
   const [statusValues, setStatusValues] = useState([]);
   const [error, setError] = useState(false);
@@ -60,6 +60,11 @@ const Orders = () => {
           <li className="list-group-item">
             <Link className="nav-link" to="/admin/orders">
               Orders
+            </Link>
+          </li>
+          <li className="list-group-item">
+            <Link className="nav-link" to="/admin/products">
+              Manage Products
             </Link>
           </li>
         </ul>
