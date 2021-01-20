@@ -39,7 +39,7 @@ app.use(cors());
 
 // Routes Middleware
 app.use("/api", authRouters);
-app.use("/api", userRouters);
+app.use("/api/user", userRouters);
 app.use("/api/category", categoryRouters);
 app.use("/api/product", productRouters);
 app.use("/api/braintree", braintreeRouters);

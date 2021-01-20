@@ -9,8 +9,8 @@ router.get("/secret/:userId", requiredSignin, isAuth, isAdmin, (req, res) => {
   res.json({ user: req.profile });
 });
 
-router.get("/user/:userId", requiredSignin, isAuth, getUserProfile)
-router.put("/user/:userId", requiredSignin, isAuth, updateUserProfile)
+router.get("/:userId", requiredSignin, isAuth, getUserProfile)
+router.put("/:userId", requiredSignin, isAuth, updateUserProfile)
 router.param("userId", userById);
 
 module.exports = router;
