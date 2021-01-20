@@ -3,8 +3,8 @@ const { Order, CartItem } = require("../models/order");
 const { errorHandler } = require("../helpers/errorHandler");
 
 exports.getAllOrders = (req, res) => {
-  Product.find()
-    .populate("user", "_id, name, address")
+  Order.find()
+    .populate("user", "_id name address")
     .sort("-created")
     .exec((err, orders) => {
       if (err) {
