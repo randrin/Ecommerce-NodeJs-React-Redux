@@ -15,6 +15,8 @@ import Signin from "../user/Signin";
 import Signup from "../user/Signup";
 import UserDashboard from "../user/UserDashboard";
 import ManageProducts from "../admin/ManageProducts";
+import UpdateProduct from "../admin/UpdateProduct";
+import Error404 from "../store/Error404";
 
 const Routes = () => (
   <Switch>
@@ -30,7 +32,9 @@ const Routes = () => (
     <AdminRoute exact path="/admin/dashboard" strict component={AdminDashboard} />
     <AdminRoute exact path="/create/category" strict component={AddCategory} />
     <AdminRoute exact path="/create/product" strict component={AddProduct} />
+    <AdminRoute exact path="/admin/product/update/:productId" strict component={UpdateProduct} />
     <AdminRoute exact path="/admin/orders" strict component={Orders} />
+    <Route component={Error404} />
   </Switch>
 );
 

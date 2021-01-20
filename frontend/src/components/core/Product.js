@@ -11,7 +11,7 @@ const Product = (props) => {
   const loadSingleProduct = (productId) => {
     getProductById(productId).then((data) => {
       if (data.error) {
-        setError(data.errror);
+        setError(data.error);
       } else {
         setProduct(data);
         loadRelatedProducts(data._id);
@@ -22,7 +22,7 @@ const Product = (props) => {
   const loadRelatedProducts = (productId) => {
     getProductsRelatedById(productId).then((data) => {
       if (data.error) {
-        setError(data.errror);
+        setError(data.error);
       } else {
         setRelatedProduct(data);
       }

@@ -2,11 +2,42 @@ import React, { useState, useEffect } from "react";
 import Layout from "../core/Layout";
 import { isAuthenticated } from "../auth";
 import { Link } from "react-router-dom";
-import { getCategories, createProduct } from "./ApiAdmin";
+import { deleteProductById, getProducts } from "../admin/ApiAdmin";
 
 const ManageProducts = () => {
+  const [products, setProducts] = useState([]);
+  const [error, setError] = useState(false);
+
   // destructure user and token from localstorage
   const { user, token } = isAuthenticated();
+
+  useEffect(() => {
+    init();
+  }, []);
+
+  const init = () => {
+    loadProducts();
+  };
+
+  const loadProducts = () => {
+    getProducts().then((data) => {
+      if (data.error) {
+        setError(true);
+      } else {
+        setProducts(data);
+      }
+    });
+  };
+
+  const deleteProduct = (productId) => {
+    deleteProductById(user._id, token, productId).then((data) => {
+      if (data.error) {
+        setError(true);
+      } else {
+        loadProducts();
+      }
+    });
+  };
 
   const adminLinks = () => {
     return (
@@ -46,7 +77,27 @@ const ManageProducts = () => {
     >
       <div className="row">
         <div className="col-3">{adminLinks()}</div>
-        <div className="col-9">Test</div>
+        <div className="col-9">
+          <ul className="list-group">
+            {products.map((product, index) => (
+              <li
+                key={index}
+                className="list-group-item d-flex justify-content-between align-items-center"
+              >
+                <strong>{product.name}</strong>
+                <Link to={`/admin/product/update/${product._id}`}>
+                  <span className="badge badge-primary badge-pill">Update</span>
+                </Link>
+                <span
+                  onClick={() => deleteProduct(product._id)}
+                  className="badge badge-danger badge-pill cursor-pointer"
+                >
+                  Delete
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
       </div>
     </Layout>
   );
