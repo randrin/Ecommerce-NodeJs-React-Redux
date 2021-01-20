@@ -1,7 +1,20 @@
+const Product = require("../models/product");
 const { Order, CartItem } = require("../models/order");
 const { errorHandler } = require("../helpers/errorHandler");
 
-exports.getOrders = (req, res) => {};
+exports.getAllOrders = (req, res) => {
+  Product.find()
+    .populate("user", "_id, name, address")
+    .sort("-created")
+    .exec((err, orders) => {
+      if (err) {
+        return res.status(400).json({
+          error: errorHandler(err),
+        });
+      }
+      res.json(orders);
+    });
+};
 
 exports.createOrder = (req, res) => {
   req.body.order.user = req.profile;

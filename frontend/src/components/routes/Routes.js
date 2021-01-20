@@ -2,6 +2,7 @@ import React from "react";
 import { Switch, Route } from "react-router-dom";
 import AddCategory from "../admin/AddCategory";
 import AddProduct from "../admin/AddProduct";
+import Orders from "../admin/Orders";
 import AdminRoute from "../auth/AdminRoute";
 import PrivateRoute from "../auth/PrivateRoute";
 import Cart from "../core/Cart";
@@ -25,6 +26,7 @@ const Routes = () => (
     <AdminRoute exact path="/admin/dashboard" strict component={AdminDashboard} />
     <AdminRoute exact path="/create/category" strict component={AddCategory} />
     <AdminRoute exact path="/create/product" strict component={AddProduct} />
+    <AdminRoute exact path="/admin/orders" strict component={Orders} />
   </Switch>
 );
 
