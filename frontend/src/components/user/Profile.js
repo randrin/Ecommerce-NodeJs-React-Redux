@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import { isAuthenticated } from "../auth";
 import Layout from "../core/Layout";
-import { getUserInfos, updateUserInfos } from "./ApiUser";
+import { getUserInfos, updateUserInfos, updateProfileUser } from "./ApiUser";
 
 const Profile = (props) => {
   const [user, setUser] = useState({
@@ -23,7 +23,6 @@ const Profile = (props) => {
   }, []);
 
   const init = (userId) => {
-    console.log("userId: ", userId);
     getUserInfos(userId, token).then((data) => {
       if (data.error) {
         setUser({ ...user, error: true });
@@ -58,8 +57,73 @@ const Profile = (props) => {
     );
   };
 
-  const userProfile = () => {
-    return <h2>{JSON.stringify(user)}</h2>;
+  const updateUserProfile = (name, email, password) => (
+    <form>
+      <div className="form-group">
+        <label className="text-muted">Name *</label>
+        <input
+          type="text"
+          onChange={handleChange("name")}
+          className="form-control"
+          value={name}
+        />
+      </div>
+      <div className="form-group">
+        <label className="text-muted">Email *</label>
+        <input
+          type="email"
+          onChange={handleChange("email")}
+          className="form-control"
+          value={email}
+        />
+      </div>
+      <div className="form-group">
+        <label className="text-muted">Password *</label>
+        <input
+          type="password"
+          onChange={handleChange("password")}
+          className="form-control"
+          value={password}
+        />
+      </div>
+
+      <button onClick={clickSubmit} className="btn btn-primary">
+        Submit
+      </button>
+    </form>
+  );
+
+  const handleChange = (name) => (e) => {
+    setUser({ ...user, error: false, [name]: e.target.value });
+  };
+
+  const clickSubmit = (e) => {
+    e.preventDefault();
+    updateUserInfos(props.match.params.userId, token, {
+      name,
+      email,
+      password,
+    }).then((data) => {
+      if (data.error) {
+        // console.log(data.error);
+        alert(data.error);
+      } else {
+        updateProfileUser(data, () => {
+          setUser({
+            ...user,
+            name: data.name,
+            email: data.email,
+            success: true,
+          });
+        });
+      }
+    });
+  };
+
+  const redirectUser = (success) => {
+    if (success) {
+      return <Redirect to="/user/dashboard" />;
+    }
   };
 
   return (
@@ -71,7 +135,10 @@ const Profile = (props) => {
       >
         <div className="row">
           <div className="col-3">{userLinks()}</div>
-          <div className="col-9">{userProfile()}</div>
+          <div className="col-9">
+            {updateUserProfile(name, email, password)}
+            {redirectUser(success)}
+          </div>
         </div>
       </Layout>
     </div>

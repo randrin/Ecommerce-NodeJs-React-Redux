@@ -1,12 +1,38 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { isAuthenticated } from "../auth";
 import Layout from "../core/Layout";
+import { getPurchaseOrdersUser } from "./ApiUser";
+import moment from "moment";
 
 const UserDashboard = () => {
+  const [history, setHistory] = useState([]);
+  const [error, setError] = useState(false);
   const {
     user: { _id, name, email, role },
   } = isAuthenticated();
+
+  const userId = isAuthenticated() && isAuthenticated().user._id;
+  const token = isAuthenticated() && isAuthenticated().token;
+
+  useEffect(() => {
+    init(userId, token);
+  }, []);
+
+  const init = (userId, token) => {
+    loadPurchaseOrdersUser(userId, token);
+  };
+
+  const loadPurchaseOrdersUser = (userId, token) => {
+    console.log("history: ", userId, token);
+    getPurchaseOrdersUser(userId, token).then((data) => {
+      if (data.error) {
+        setError(true);
+      } else {
+        setHistory(data);
+      }
+    });
+  };
 
   const userInfo = () => {
     return (
@@ -23,16 +49,29 @@ const UserDashboard = () => {
     );
   };
 
-  const purchaseHistory = () => {
-    return (
-      <div className="card mb-5">
-        <h3 className="card-header">Purchase Histories</h3>
-        <ul className="list-group">
-          <li className="list-group-item">History</li>
-        </ul>
-      </div>
-    );
-  };
+  const purchaseHistory = (histories) => (
+    <div className="card mb-5">
+      <h3 className="card-header">Purchase Histories</h3>
+      <ul className="list-group">
+        <li className="list-group-item">
+          {histories.map((h, hIndex) => (
+            <>
+              <div key={hIndex}>
+                {h.products.map((product, pIndex) => (
+                  <div key={pIndex}>
+                    <h6>Product Name: {product.name}</h6>
+                    <h6>Product Price: {product.price} €</h6>
+                    <h6>Product Date: {moment(h.createdAt).fromNow()}</h6>
+                  </div>
+                ))}
+              </div>
+              <hr />
+            </>
+          ))}
+        </li>
+      </ul>
+    </div>
+  );
 
   const userLinks = () => {
     return (
@@ -50,7 +89,7 @@ const UserDashboard = () => {
             </Link>
           </li>
           <li className="list-group-item">
-            <Link className="nav-link" to={`/profile/${_id}`}>
+            <Link className="nav-link" to={`/profile/${userId}`}>
               Update Profile
             </Link>
           </li>
@@ -70,7 +109,7 @@ const UserDashboard = () => {
           <div className="col-3">{userLinks()}</div>
           <div className="col-9">
             {userInfo()}
-            {purchaseHistory()}
+            {purchaseHistory(history)}
           </div>
         </div>
       </Layout>
